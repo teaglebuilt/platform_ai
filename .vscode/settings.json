@@ -1,0 +1,14 @@
+{
+  "python.analysis.extraPaths": [
+    "src",
+    ".venv/lib/python3.12/site-packages"
+  ],
+  "python.languageServer": "Default",
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.defaultColorDecorators": "never",
+    "editor.formatOnType": true,
+    "editor.wordBasedSuggestions": "off",
+    "editor.tabSize": 4
+  }
+}
