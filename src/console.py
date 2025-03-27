@@ -1,23 +1,27 @@
+import os
+from time import sleep
+
 import requests
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.spinner import Spinner
 from rich.live import Live
-from time import sleep
+
+from providers import get_llm_provider, LLMProvider
 
 console = Console()
-ENVOY_URL = "http://localhost:8080/agent1"
 
 chat_history = []
 
 def send_message_to_agent(message):
+    headers = {"x-ai-eg-model": "llama3:latest"}
+    ollama_chat = get_llm_provider(LLMProvider.OLLAMA)(
+        base_url=os.environ['AI_GATEWAY_URL'],
+        headers=headers
+    )
     try:
-        response = requests.post(ENVOY_URL, json={"message": message}, timeout=30)
-        if response.ok:
-            return response.json().get("response", "[No response field]")
-        else:
-            return f"[Error {response.status_code}] {response.text}"
+        ollama_chat.invoke(message)
     except Exception as e:
         return f"[Error] {str(e)}"
 

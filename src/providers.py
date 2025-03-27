@@ -1,15 +1,17 @@
+from typing import Union
 from langchain_community import chat_models
+from langchain_community.chat_models import ChatOllama, ChatOpenAI, ChatAnthropic
 from enum import Enum
-from typing import Any
 
 
 class LLMProvider(Enum):
     OPENAI = "ChatOpenAI"
     ANTHROPIC = "ChatAnthropic"
-    GOOGLE = "ChatGoogle"
+    OLLAMA = "ChatOllama"
 
+ChatModelType = Union[ChatOllama, ChatOpenAI, ChatAnthropic]
 
-def get_llm_provider(provider: LLMProvider) -> Any:
+def get_llm_provider(provider: LLMProvider) -> ChatModelType:
     try:
         provider_class = getattr(chat_models, provider.value)
         return provider_class()
