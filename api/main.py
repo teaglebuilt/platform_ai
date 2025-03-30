@@ -15,3 +15,5 @@ def create_service() -> FastAPI:
         openapi_tags=TAGS,
     )
     return service
+
+

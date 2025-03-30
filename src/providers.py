@@ -11,7 +11,7 @@ class LLMProvider(Enum):
 
 ChatModelType = Union[ChatOllama, ChatOpenAI, ChatAnthropic]
 
-def get_llm_provider(provider: LLMProvider) -> ChatModelType:
+def get_provider(provider: LLMProvider) -> ChatModelType:
     try:
         provider_class = getattr(chat_models, provider.value)
         return provider_class()

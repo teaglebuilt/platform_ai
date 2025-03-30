@@ -1,14 +1,13 @@
 import os
 from time import sleep
 
-import requests
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.spinner import Spinner
 from rich.live import Live
 
-from providers import get_llm_provider, LLMProvider
+from providers import get_provider, LLMProvider
 
 console = Console()
 
@@ -16,12 +15,14 @@ chat_history = []
 
 def send_message_to_agent(message):
     headers = {"x-ai-eg-model": "llama3:latest"}
-    ollama_chat = get_llm_provider(LLMProvider.OLLAMA)(
+    ollama_chat = get_provider(LLMProvider.OLLAMA)(
         base_url=os.environ['AI_GATEWAY_URL'],
-        headers=headers
+        headers=headers,
+        messages=chat_history
     )
+    print("ollama", ollama_chat)
     try:
-        ollama_chat.invoke(message)
+        ollama_chat.invoke(messages=[message])
     except Exception as e:
         return f"[Error] {str(e)}"
 
@@ -56,6 +57,7 @@ def run_chat():
             console.print(render_chat())
         except KeyboardInterrupt:
             break
+
 
 
 if __name__ == "__main__":
