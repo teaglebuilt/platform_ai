@@ -1,37 +1,42 @@
-from typing import TypeVar, Generic
+from typing import TypedDict
 import sys
 from pydantic import BaseModel
 
-from loaders import get_loader, Loaders
-
-A = TypeVar("A", bound=BaseModel)
+from loaders.data_loader import get_data_loader, DataLoaders
 
 
-class Trainer(Generic[A]):
-    def __init__(self, args: A):
-        self.args = args
+class TrainingCommandLineArguments(TypedDict):
+    loader: str
+
+
+class TrainingArgs(BaseModel):
+    source_type: str
+
+
+class Trainer[T: TrainingArgs]:
+    def __init__(self, args: T):
         self.loader = self.determine_loader(args)
 
-    def determine_loader(self, args: A):
+    def determine_loader(self, args: T):
         if args.source_type == "repo":
-            return get_loader(Loaders.GIT)
+            return get_data_loader(DataLoaders.GIT.value)
         elif args.source_type == "file":
-            return get_loader(Loaders.LOCALDIR)
+            return get_data_loader(DataLoaders.LOCALDIR.value)
         elif args.source_type == "url":
-            return get_loader(Loaders.URL)
+            return get_data_loader(DataLoaders.URL.value)
         else:
             raise ValueError(f"Unsupported source_type: {args.source_type}")
 
 
-def get_trainer(args: list[str]) -> Trainer:
-    return Trainer(args=args)
+def get_trainer(entrypoint_args: TrainingCommandLineArguments) -> Trainer:
+    training_arguments = TrainingArgs(
+        source_type=entrypoint_args["loader"]
+    )
+    return Trainer[TrainingArgs](training_arguments)
 
 
-def run_train(args=sys.argv) -> None:
-    trainer = get_trainer(args)
+def run_train(training_args) -> None:
+    trainer = get_trainer({
+        "loader": training_args.loader
+    })
     print("trainer", trainer)
-
-
-if __name__ == "__main__":
-    import sys
-    run_train(sys.argv)

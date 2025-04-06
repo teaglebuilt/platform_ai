@@ -1,0 +1,4 @@
+engineering_task:
+  description: "Review AI implementation files for potential improvements"
+  expected_output: "A summary of key findings and recommendations"
+  agent: "principal_engineer"

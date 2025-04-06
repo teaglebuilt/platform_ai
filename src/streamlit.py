@@ -25,5 +25,6 @@ def run_chat():
         reply = send_message_to_agent(user_input)
         print(f"Agent: {reply}")
 
+
 if __name__ == "__main__":
     run_chat()

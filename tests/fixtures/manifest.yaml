@@ -1,0 +1,14 @@
+---
+data:
+  domain:
+    name: "homelab"
+
+code:
+  collect:
+    exclude_directories:
+    - "node_modules"
+    - "dist"
+    - "build"
+    preprocess:
+      remove_comments: true
+      normalize_whitespace: true

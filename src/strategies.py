@@ -1,5 +1,9 @@
 from typing import Protocol
+from abc import abstractmethod
 
 
-class MCPStrategy(Protocol):
-    pass
+class RoutingStrategy(Protocol):
+
+    @abstractmethod
+    def route(self):
+        pass

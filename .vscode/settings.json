@@ -1,8 +1,10 @@
 {
   "python.analysis.extraPaths": [
     "src",
+    "api",
     ".venv/lib/python3.12/site-packages"
   ],
+  "python.analysis.typeCheckingMode": "standard",
   "python.languageServer": "Default",
   "[python]": {
     "diffEditor.ignoreTrimWhitespace": false,
