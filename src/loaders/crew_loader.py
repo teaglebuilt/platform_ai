@@ -1,10 +1,10 @@
-import os
 import yaml
 from pathlib import Path
 from crewai import Agent, Task, Crew
+from langchain_openai import ChatOpenAI
 from crewai.tools import BaseTool
 from typing import Union, Optional, Any
-from loaders.provider_loader import get_llm_provider, LLMProvider
+from loaders.provider_loader import get_llm_provider
 
 
 def parse_yaml(file_path: Path) -> Union[dict[str, Any], list, None]:
@@ -87,5 +87,8 @@ def construct_crew_from_config(config_dir: Path, tools: Optional[list[BaseTool]]
         agents=list(agents.values()),
         tasks=list(tasks.values()),
         verbose=verbose,
-        output_log_file=True
+        output_log_file=True,
+        memory=True,
+        cache=True,
+        manager_llm=ChatOpenAI(model="gpt-4")
     )

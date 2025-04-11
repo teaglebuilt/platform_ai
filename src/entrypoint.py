@@ -24,7 +24,7 @@ def run_main(args=sys.argv[1:]) -> None:
     if parsed_args.command == 'feature':
         feature_path = parsed_args.path
         verbose = parsed_args.verbose
-        feature_crew = construct_crew_from_config(Path(feature_path))
+        feature_crew = construct_crew_from_config(Path(feature_path), verbose=verbose)
         print("crew", feature_crew)
         result = feature_crew.kickoff()
         print(f"Raw Output: {result.raw}")

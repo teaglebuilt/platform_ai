@@ -1,23 +1,23 @@
 import os
 from enum import Enum
-from typing import Union, Optional, Literal
+from typing import Union, Type, Literal
 
-from langchain_community import chat_models
 from langchain_core.callbacks import CallbackManager, BaseCallbackHandler
 from langchain_community.chat_models import ChatOllama, ChatOpenAI, ChatAnthropic
-
+from langchain_core.language_models.chat_models import BaseChatModel
+from crewai.llm import LLM
 from lib.observability.tracing import get_tracer
 
 ChatModelType = Union[ChatOllama, ChatOpenAI, ChatAnthropic]
 
 
 class LLMProvider(Enum):
-    OPENAI = "ChatOpenAI"
-    ANTHROPIC = "ChatAnthropic"
-    OLLAMA = "ChatOllama"
+    OPENAI = ChatOpenAI
+    ANTHROPIC = ChatAnthropic
+    OLLAMA = ChatOllama
 
 
-MODEL_PROVIDER_MAP = {
+MODEL_PROVIDER_MAP: dict[str, Type[BaseChatModel]] = {
     "gpt-4": ChatOpenAI,
     "gpt-4o": ChatOpenAI,
     "llama-3": ChatOllama,
@@ -27,7 +27,7 @@ MODEL_PROVIDER_MAP = {
 }
 
 
-def resolve_llm_provider(llm_name: Literal["gpt-4o"]) -> ChatModelType | None:
+def resolve_llm_provider(llm_name: Literal["gpt-4o"]) -> Type[BaseChatModel] | None:
     for key, cls in MODEL_PROVIDER_MAP.items():
         if llm_name.startswith(key):
             return cls
@@ -38,7 +38,7 @@ def get_llm_provider(
     llm: Literal["gpt-4o"],
     trace_with: Literal["langsmith", "openlit", "none"] = "none",
     **kwargs
-):
+) -> LLM | None:
     provider = resolve_llm_provider(llm)
     if not provider:
         raise ValueError("No provider was found")
@@ -48,12 +48,14 @@ def get_llm_provider(
         callbacks.append(tracer)
     if isinstance(provider, ChatOpenAI):
         cost_tracker = ProviderCostTrackingCallbackHandler()
-        return provider(
+        return LLM(
+            model=llm,
+            temperature=0,
+            messages=[],
             api_key=os.environ["OPENAI_API_KEY"],
             callback_manager=CallbackManager([cost_tracker]),
             **kwargs
         )
-    return provider
 
 
 class ProviderCostTrackingCallbackHandler(BaseCallbackHandler):
