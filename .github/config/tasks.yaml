@@ -1,5 +1,15 @@
-research_task:
+---
+analyze_repository_task:
   description: >
-    Conduct a thorough research about the customer and competitors in the context of {customer_domain}. Make sure you find any interesting and relevant information given the current year is 2024. We are working with them on the following project: {project_description}.
+    Read all code in the repository and summarize its functionality
   expected_output: >
-    A complete report on the customer and their customers and competitors, including their demographics, preferences, market positioning and audience engagement.
+    A structured summary of key files and their responsibilities
+  agent: repo_analyzer
+
+write_solution_task:
+  description: >
+    Using the repository context and the contents of '.github/promps/objective.md', generate the code required to implement the objective
+  expected_output: >
+    Complete source code or patches needed to meet the objective
+  agent: code_writer
+  # output_file: solution.md

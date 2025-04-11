@@ -1,10 +1,12 @@
 import yaml
 from pathlib import Path
+from typing import Literal, Type
 from crewai import Agent, Task, Crew
 from langchain_openai import ChatOpenAI
 from crewai.tools import BaseTool
 from typing import Union, Optional, Any
 from loaders.provider_loader import get_llm_provider
+from crewai_tools import DirectoryReadTool, FileReadTool
 
 
 def parse_yaml(file_path: Path) -> Union[dict[str, Any], list, None]:
@@ -76,13 +78,26 @@ def create_tasks_dict(tasks_config, agents_config) -> dict[str, Task]:
     return tasks_dict
 
 
-def construct_crew_from_config(config_dir: Path, tools: Optional[list[BaseTool]] = None, verbose: bool = True) -> Crew:
+def get_tools(type: Literal["repo"], path: Path) -> list[BaseTool]:
+    match type:
+        case "repo":
+            repo_tool = DirectoryReadTool(
+                directory=str(path.cwd()),
+                exclude_dirs=[".venv", ".git", "*/__pycache__", ".git", "node_modules"],
+                exclude_files=["*.pyc", "*.log", "*.tmp", "*.sqlite3", "*.db"]
+            )
+            file_tool = FileReadTool()
+            return [repo_tool, file_tool]
+    return []
+
+
+def construct_crew_from_config(type: Literal["repo"], config_dir: Path, verbose: bool = True) -> Crew:
     agents_config = parse_yaml(config_dir / "agents.yaml")
     tasks_config = parse_yaml(config_dir / "tasks.yaml")
-
+    tools = get_tools(type, config_dir)
     agents = build_agents_dict(agents_config, tools)
     tasks = create_tasks_dict(tasks_config, agents)
-
+    print("verbose", verbose)
     return Crew(
         agents=list(agents.values()),
         tasks=list(tasks.values()),

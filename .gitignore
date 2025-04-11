@@ -10,3 +10,5 @@ wheels/
 .venv
 k8s/charts
 .envrc
+logs.txt
+logs
