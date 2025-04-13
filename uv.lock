@@ -22,6 +22,7 @@ dependencies = [
     { name = "mcp" },
     { name = "nvitop" },
     { name = "openai-agents" },
+    { name = "prometheus-client" },
     { name = "rich" },
     { name = "streamlit" },
 ]
@@ -38,6 +39,7 @@ requires-dist = [
     { name = "mcp", specifier = ">=1.5.0" },
     { name = "nvitop", specifier = ">=1.4.2" },
     { name = "openai-agents", specifier = ">=0.0.7" },
+    { name = "prometheus-client", specifier = ">=0.21.1" },
     { name = "rich", specifier = ">=13.9.4" },
     { name = "streamlit", specifier = ">=1.44.0" },
 ]
@@ -3014,6 +3016,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5a/dd/30f7d2e992f80fcaedc5b99761e006bbb0b954813243542c480b9576b4be/posthog-3.23.0.tar.gz", hash = "sha256:1ac0305ab6c54a80c4a82c137231f17616bef007bbf474d1a529cda032d808eb", size = 72077 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/17/1e/aa457f5b15c9a018434dd71567c4a8f09c1701607a1d4daf5f01d6eccb7a/posthog-3.23.0-py2.py3-none-any.whl", hash = "sha256:2b07d06670170ac2e21465dffa8d356722834cc877ab34e583da6e525c1037df", size = 84976 },
+]
+
+[[package]]
+name = "prometheus-client"
+version = "0.21.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/14/7d0f567991f3a9af8d1cd4f619040c93b68f09a02b6d0b6ab1b2d1ded5fe/prometheus_client-0.21.1.tar.gz", hash = "sha256:252505a722ac04b0456be05c05f75f45d760c2911ffc45f2a06bcaed9f3ae3fb", size = 78551 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ff/c2/ab7d37426c179ceb9aeb109a85cda8948bb269b7561a0be870cc656eefe4/prometheus_client-0.21.1-py3-none-any.whl", hash = "sha256:594b45c410d6f4f8888940fe80b5cc2521b305a1fafe1c58609ef715a001f301", size = 54682 },
 ]
 
 [[package]]
