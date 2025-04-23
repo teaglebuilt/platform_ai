@@ -1,9 +1,7 @@
 import yaml
 from pathlib import Path
-from typing import Literal, Type
+from typing import Literal
 from crewai import Agent, Task, Crew
-from langchain_openai import ChatOpenAI
-from langchain_ollama import ChatOllama
 from crewai.tools import BaseTool
 from typing import Union, Optional, Any
 from loaders.provider_loader import get_llm_provider
@@ -21,7 +19,7 @@ def create_agent(
     agent_cfg: dict[str, Any],
     tools: Optional[list[BaseTool]] = None,
 ) -> Agent:
-
+    llm = get_llm_provider(agent_cfg.get("llm", "gpt-4o"))
     return Agent(
         role=agent_cfg["role"].strip(),
         goal=agent_cfg["goal"].strip(),
@@ -29,7 +27,7 @@ def create_agent(
         verbose=agent_cfg.get("verbose", False),
         max_iter=agent_cfg.get("max_iter", 10),
         tools=tools or [],
-        llm=get_llm_provider(agent_cfg.get("llm", "gpt-4o")),
+        llm=llm,
         system_template=agent_cfg.get("system_template", ""),
         prompt_template=agent_cfg.get("prompt_template", ""),
         response_template=agent_cfg.get("response_template", ""),
@@ -104,8 +102,9 @@ def construct_crew_from_config(type: Literal["repo"], config_dir: Path, verbose:
         output_log_file=True,
         memory=True,
         cache=True,
-        manager_llm=ChatOllama(
-            model="codellama:latest",
-            base_url="http://ollama.homelab.internal"
-        )
+        prompt_file=None if type == "repo" else ".github/prompts/objective.md",
+        # manager_llm=ChatOllama(
+        #     model="deepseek-coder-v2:latest",
+        #     base_url="http://ollama.homelab.internal"
+        # )
     )

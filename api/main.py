@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from metadata import VERSION, TAGS
 from lifespan import service_lifespan
-from mcp.server.fastmcp import FastMCP
+from services.mcp_service import mount_sse_service
+from services.cost_metrics import metrics_app
 
 def create_service() -> FastAPI:
     """
@@ -12,27 +12,27 @@ def create_service() -> FastAPI:
         title="AI Platform Service",
         description="",
         version=VERSION,
-        # lifespan=service_lifespan,
+        lifespan=service_lifespan,
         openapi_tags=TAGS,
     )
-    # mcp_server = FastMCP("MCP Server")
-    # service.mount("/mcp", mcp_server.sse_app())
+    # service_with_mcp_routes = mount_sse_service(service)
     return service
 
 
-api = create_service()
+platform_api = create_service()
 
 
-api.get("/healthcheck")
+platform_api.get("/healthcheck")
 def healthcheck():
     return {"status": "healthy"}
 
 
-api.post("/webhook")
+platform_api.post("/webhook")
 def webhook_event():
     pass
 
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(api, host="0.0.0.0", port=3000)
+    uvicorn.run(platform_api, host="0.0.0.0", port=8000)

@@ -1,5 +1,4 @@
 from typing import TypedDict
-import sys
 from pydantic import BaseModel
 
 from loaders.data_loader import get_data_loader, DataLoaders

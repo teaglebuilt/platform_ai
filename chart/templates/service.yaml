@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-platform-cost-exporter
+  namespace: ai
+  labels:
+    app: ai-platform-cost-exporter
+spec:
+  selector:
+    app: ai-platform-cost-exporter
+  ports:
+  - name: http
+    port: 8000
+    targetPort: http

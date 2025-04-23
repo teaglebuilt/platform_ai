@@ -5,15 +5,21 @@ repo_analyzer:
   backstory: >
     You are a highly skilled developer and senior software architect with extensive experience in complex codebases, you excel at understanding and documenting technical systems. Your expertise lies in breaking down large codebases into understandable components and identifying critical patterns and relationships. You have experience building platforms and repeatable solutions for developers and organizations.
   verbose: true
+  memory: true
+  llm: gpt-4
   max_iter: 2
   tools:
-  - DirectoryReadTool
+  - LocalRepoReaderTool
   - FileReadTool
 
 code_writer:
   role: "Objective Code Generator"
-  goal: "Generate the code required to meet the objective defined in the project"
-  backstory: "You're a senior software engineer who takes spec docs and turns them into production-ready code."
+  goal: "Generate examples of code changes to the existing codebase that would be needed to support the expected outcome."
+  backstory: "Your a principal software engineer that specializes in building developer platforms, data platforms, and ai architecture."
+  llm: qwen2.5-coder:latest
+  expected_output: result.md
+  memory: true
   verbose: true
   tools:
+  - LocalRepoReaderTool
   - FileReadTool

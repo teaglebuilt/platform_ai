@@ -1,0 +1,38 @@
+{{ if .Values.ebpf.enabled }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: bpftrace-nvkm-probe
+  namespace: kube-system
+  labels:
+    app: bpftrace-nvkm-probe
+spec:
+  selector:
+    matchLabels:
+      app: bpftrace-nvkm-probe
+  template:
+    metadata:
+      labels:
+        app: bpftrace-nvkm-probe
+    spec:
+      hostPID: true
+      hostNetwork: true
+      nodeSelector:
+        nvidia.com/gpu.present: "true"
+      containers:
+      - name: bpftrace
+        image: quay.io/iovisor/bpftrace:latest
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - SYS_ADMIN
+              - SYS_RESOURCE
+              - DAC_OVERRIDE
+        command: ["/bin/sh", "-c"]
+        args:
+          - >
+            bpftrace -l '*nvidia*' && bpftrace -e 'kprobe:nvidia_* { @[func] = count(); }'
+      tolerations:
+      - operator: Exists
+{{ end }}

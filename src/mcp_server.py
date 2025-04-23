@@ -14,7 +14,6 @@ mcp_server = FastMCP("MCP Server")
 async def research_codebase(args: dict) -> CommandHelpResult:
     try:
         sys.stderr.write(f"Tool called with args: {args}\n")
-        # Your logic here
         return CommandHelpResult(help_text="Tool ran successfully", status="success")
     except Exception as e:
         sys.stderr.write("Exception in tool:\n")

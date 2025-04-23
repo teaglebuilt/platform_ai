@@ -19,21 +19,26 @@ def run_main(args=sys.argv[1:]) -> None:
     train_parser.add_argument('--loader', required=True)
 
     parsed_args = parser.parse_args(args)
+    verbose = parsed_args.verbose
+
     if parsed_args.command == 'train':
         run_train(parsed_args)
     if parsed_args.command == 'feature':
         feature_path = parsed_args.path
-        verbose = parsed_args.verbose
         feature_crew = construct_crew_from_config(type="repo", config_dir=Path(feature_path), verbose=verbose or True)
-        print("crew", feature_crew)
         result = feature_crew.kickoff()
-        print(f"Raw Output: {result.raw}")
+
         if result.json_dict:
             print(f"JSON Output: {json.dumps(result.json_dict, indent=2)}")
         if result.pydantic:
             print(f"Pydantic Output: {result.pydantic}")
         print(f"Tasks Output: {result.tasks_output}")
         print(f"Token Usage: {result.token_usage}")
+
+    if parsed_args.command == 'train':
+        feature_path = parsed_args.path
+        feature_crew = construct_crew_from_config(type="repo", config_dir=Path(feature_path), verbose=verbose or True)
+        # feature_crew.train()
 
 
 if __name__ == "__main__":

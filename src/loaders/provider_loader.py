@@ -6,7 +6,6 @@ from langchain_core.callbacks import CallbackManager, BaseCallbackHandler
 from langchain_community.chat_models import ChatOllama, ChatOpenAI, ChatAnthropic
 from langchain_core.language_models.chat_models import BaseChatModel
 from crewai.llm import LLM
-from lib.observability.tracing import get_tracer
 
 ChatModelType = Union[ChatOllama, ChatOpenAI, ChatAnthropic]
 
@@ -20,18 +19,22 @@ class LLMProvider(Enum):
 MODEL_PROVIDER_MAP: dict[str, Type[BaseChatModel]] = {
     "gpt-4": ChatOpenAI,
     "gpt-4o": ChatOpenAI,
+    "gpt-4.1-mini": ChatOpenAI,
     "llama-3": ChatOllama,
     "llama-3.3-70b": ChatOllama,
     "claude-3": ChatAnthropic,
     "claude-3-opus": ChatAnthropic,
+    "deepseek-coder-v2:latest": ChatOllama,
+    "qwen2.5-coder:latest": ChatOllama,
+    "llama-3.3-70b-instruct": ChatOllama
 }
 
 
 def resolve_llm_provider(llm_name: Literal["gpt-4o"]) -> Type[BaseChatModel] | None:
     for key, cls in MODEL_PROVIDER_MAP.items():
-        if llm_name.startswith(key):
+        if llm_name == key:
             return cls
-        raise ValueError(f"No matching provider found for LLM: {llm_name}")
+    raise ValueError(f"No matching provider found for LLM: {llm_name}")
 
 
 def get_llm_provider(
@@ -42,10 +45,16 @@ def get_llm_provider(
     provider = resolve_llm_provider(llm)
     if not provider:
         raise ValueError("No provider was found")
-    callbacks = [ProviderCostTrackingCallbackHandler()]
-    if trace_with != "none":
-        tracer = get_tracer(trace_with)
-        callbacks.append(tracer)
+    # callbacks = [ProviderCostTrackingCallbackHandler()]
+    # if trace_with != "none":
+    #     tracer = get_tracer(trace_with)
+    #     callbacks.append(tracer)
+    if isinstance(provider, ChatOllama):
+        return LLM(
+            model=llm,
+            base_url="https://ollama.homelab.internal",
+            **kwargs
+        )
     if isinstance(provider, ChatOpenAI):
         cost_tracker = ProviderCostTrackingCallbackHandler()
         return LLM(
@@ -53,6 +62,7 @@ def get_llm_provider(
             temperature=0,
             messages=[],
             api_key=os.environ["OPENAI_API_KEY"],
+            base_url=f"http://{os.environ["AI_GATEWAY_IP"]}",
             callback_manager=CallbackManager([cost_tracker]),
             **kwargs
         )

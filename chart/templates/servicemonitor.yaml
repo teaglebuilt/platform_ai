@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ai-platform-cost-exporter
+  namespace: ai
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app: ai-platform-cost-exporter
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics

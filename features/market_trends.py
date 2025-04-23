@@ -22,6 +22,7 @@ class SearchTool(BaseTool):
         except Exception as e:
             return f"Error performing search: {str(e)}"
 
+
 # Create Agents
 researcher = Agent(
     role='Research Analyst',
