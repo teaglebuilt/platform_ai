@@ -1,8 +1,8 @@
 import os
 import cmd
 
-from infrastructure.gateway.envoy_gateway import EnvoyAIGateway
-from domain.ports.gateway import AIGateway
+from platform_ai.infra.gateway.envoy_gateway import EnvoyAIGateway
+from platform_ai.domain.ports.gateway import AIGateway
 
 
 class AIShell(cmd.Cmd):

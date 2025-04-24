@@ -2,7 +2,7 @@ from typing import Iterator, Literal
 
 from openai import OpenAI
 
-from domain.ports.provider import LLMProvider
+from platform_ai.domain.ports.provider import LLMProvider
 
 OpenAIModels = Literal["gpt-3.5-turbo", "gpt-4o"]
 

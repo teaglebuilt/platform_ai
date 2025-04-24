@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Literal
-from domain.ports.framework import AgentFramework, FeatureResult, FeatureSettings
-from infrastructure.frameworks.crewai.crewai_loader import construct_crew_from_config
-from infrastructure.frameworks.crewai.tool_provider import CrewAIToolProvider
+from platform_ai.domain.ports.framework import AgentFramework, FeatureResult, FeatureSettings
+from platform_ai.infra.frameworks.crewai.crewai_loader import construct_crew_from_config
+from platform_ai.infra.frameworks.crewai.tool_provider import CrewAIToolProvider
 
 
 class CrewAdapter(AgentFramework):

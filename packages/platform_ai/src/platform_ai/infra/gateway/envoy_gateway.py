@@ -2,9 +2,9 @@ from typing import Iterator, AsyncIterator, Union
 
 import httpx
 
-from domain.ports.gateway import AIGateway
-from infrastructure.providers.openai_provider import OpenAIModels
-from infrastructure.providers.ollama_provider import OllamaModels
+from platform_ai.domain.ports.gateway import AIGateway
+from platform_ai.infra.providers.openai_provider import OpenAIModels
+from platform_ai.infra.providers.ollama_provider import OllamaModels
 
 LLModel = Union[OpenAIModels, OllamaModels]
 

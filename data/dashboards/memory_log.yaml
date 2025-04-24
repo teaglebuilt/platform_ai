@@ -1,8 +1,0 @@
----
-title: Memory Log
-table: memory_log
-metrics:
-- name: records
-  expression: count(*)
-- name: avg_token_len
-  expression: avg(length(text))

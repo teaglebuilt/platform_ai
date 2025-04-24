@@ -1,7 +1,7 @@
 from typing import Iterator, Literal
 
 from langchain_ollama import ChatOllama
-from domain.ports.provider import LLMProvider
+from platform_ai.domain.ports.provider import LLMProvider
 
 OllamaModels = Literal["llama3:latest"]
 

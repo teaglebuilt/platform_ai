@@ -3,7 +3,7 @@ from typing import Literal
 from crewai.tools import BaseTool
 from crewai_tools import FileReadTool
 
-from infrastructure.frameworks.crewai.tools.repo_reader import LocalRepoReaderTool
+from platform_ai.infra.frameworks.crewai.tools.repo_reader import LocalRepoReaderTool
 
 
 class CrewAIToolProvider:

@@ -29,5 +29,5 @@ build-backend = "hatchling.build"
 
 
 [project.scripts]
-run = "entry.cli.main:cli"
-shell = "entry.shell"
+ai = "platform_ai.entry.cli.main:cli"
+shell = "platform_ai.entry.shell:main"
