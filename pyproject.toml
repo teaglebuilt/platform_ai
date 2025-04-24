@@ -1,35 +1,47 @@
-[project]
-name = "ai-platform"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "crawl4ai>=0.5.0.post8",
-    "crewai[tools]==0.114.0",
-    "duckdb>=1.2.1",
-    "ipykernel>=6.29.5",
-    "langchain-community>=0.3.20",
-    "langchain-ollama>=0.3.0",
-    "llama-index>=0.12.26",
-    "mcp>=1.6.0",
-    "nvitop>=1.4.2",
-    "prometheus-client>=0.21.1",
-    "rich>=13.9.4",
-    "streamlit>=1.44.0",
-    "typer>=0.15.2",
-]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv.workspace]
 members = [
-    "packages/platform_ai",
+    "packages/ai_platform",
 ]
 
-[project.scripts]
-run = "entry.cli.main:cli"
-shell = "entry.shell"
-mcp_server = "mcp_server:main"
+[tool.ruff]
+line-length = 120
+indent-width = 4
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".txt",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    ".venv",
+]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.ruff.format]
+line-ending = "auto"

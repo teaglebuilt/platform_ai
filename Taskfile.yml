@@ -31,3 +31,7 @@ tasks:
           "content": "Hello there"
         }]
       }'
+
+  launch-dashboard:
+    cmds:
+    - rill
