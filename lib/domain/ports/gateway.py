@@ -1,4 +1,6 @@
-from typing import Protocol, TypedDict, runtime_checkable
+from typing import Protocol, TypedDict, runtime_checkable, TypeVar, Iterator
+
+ModelT = TypeVar("ModelT", bound=str, contravariant=True)
 
 
 class GatewayResponse(TypedDict):
@@ -8,7 +10,10 @@ class GatewayResponse(TypedDict):
 
 
 @runtime_checkable
-class AIGateway(Protocol):
+class AIGateway(Protocol[ModelT]):
 
-    def chat(self, agent_name: str, message: str) -> str:
+    def chat(self, model: ModelT, message: str) -> str:
+        ...
+
+    def stream_chat(self, model: ModelT, message: str) -> Iterator[str]:
         ...

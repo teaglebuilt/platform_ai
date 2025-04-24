@@ -72,19 +72,14 @@ def create_tasks_dict(tasks_config, agents_config) -> dict[str, Task]:
     return tasks_dict
 
 
-def get_tools(type: Literal["repo"], path: Path) -> list[BaseTool]:
-    match type:
-        case "repo":
-            repo_tool = LocalRepoReaderTool()
-            file_tool = FileReadTool()
-            return [repo_tool, file_tool]
-    return []
-
-
-def construct_crew_from_config(type: Literal["repo"], config_dir: Path, verbose: bool = True) -> Crew:
+def construct_crew_from_config(
+    type: Literal["repo"],
+    tools: list[BaseTool],
+    config_dir: Path,
+    verbose: bool = True
+) -> Crew:
     agents_config = parse_yaml(config_dir / "agents.yaml")
     tasks_config = parse_yaml(config_dir / "tasks.yaml")
-    tools = get_tools(type, config_dir)
     agents = build_agents_dict(agents_config, tools)
     tasks = create_tasks_dict(tasks_config, agents)
 

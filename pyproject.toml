@@ -17,8 +17,14 @@ dependencies = [
     "prometheus-client>=0.21.1",
     "rich>=13.9.4",
     "streamlit>=1.44.0",
+    "typer>=0.15.2",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project.scripts]
-run = "entrypoint:run_main"
+run = "entry.cli.main:cli"
+shell = "entry.shell"
 mcp_server = "mcp_server:main"

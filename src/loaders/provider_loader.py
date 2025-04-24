@@ -62,7 +62,7 @@ def get_llm_provider(
             temperature=0,
             messages=[],
             api_key=os.environ["OPENAI_API_KEY"],
-            base_url=f"http://{os.environ["AI_GATEWAY_IP"]}",
+            base_url=f"http://{os.environ["AI_GATEWAY_HOST"]}",
             callback_manager=CallbackManager([cost_tracker]),
             **kwargs
         )

@@ -24,7 +24,7 @@ tasks:
   test-gateway:
     cmds:
     - |
-      http POST {{.AI_GATEWAY_IP}}/v1/chat/completions Content-Type:application/json x-ai-eg-model:gpt-4o-mini --raw '{
+      http POST {{.AI_GATEWAY_HOST}}/v1/chat/completions Content-Type:application/json x-ai-eg-model:gpt-4o-mini --raw '{
         "model": "gpt-4o-mini",
         "messages": [{
           "role": "system",
