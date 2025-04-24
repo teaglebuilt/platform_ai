@@ -12,3 +12,5 @@ k8s/charts
 .envrc
 logs.txt
 logs
+
+.DS_Store
