@@ -12,3 +12,9 @@ k8s/charts
 .envrc
 logs.txt
 logs
+
+.DS_Store
+
+data/generated
+data/tmp
+env

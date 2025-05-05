@@ -6,6 +6,12 @@ vars:
   AI_PLATFORM_SERVICE_CONTAINER: teaglebuilt/ai_platform_service
 
 tasks:
+  init_workspace:
+    cmds:
+    - uv venv
+    - uv pip install -e ./packages/platform_ai
+    # - uv sync --all-packages
+
   deploy:
     cmds:
     - |-
@@ -24,10 +30,16 @@ tasks:
   test-gateway:
     cmds:
     - |
-      http POST {{.AI_GATEWAY_IP}}/v1/chat/completions Content-Type:application/json x-ai-eg-model:gpt-4o-mini --raw '{
+      http POST {{.AI_GATEWAY_HOST}}/v1/chat/completions Content-Type:application/json x-ai-eg-model:gpt-4o-mini --raw '{
         "model": "gpt-4o-mini",
         "messages": [{
           "role": "system",
           "content": "Hello there"
         }]
       }'
+
+  launch-dashboard:
+    dir: data
+    cmds:
+    - ai memory
+    - rill start
