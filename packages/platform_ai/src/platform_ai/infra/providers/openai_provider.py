@@ -12,16 +12,19 @@ class OpenAIProvider(LLMProvider[OpenAIModels]):
     def __init__(
         self,
         llm: OpenAIModels,
-        base_url: Optional[str] = os.environ["AI_GATEWAY_HOST"],
         api_key: Optional[str] = None
     ) -> None:
         self.llm = llm
-        self.base_url = base_url
+        self.base_url = os.environ["AI_GATEWAY_HOST"]
         self.client = OpenAI(base_url=self.base_url, api_key=api_key)
 
     @property
     def model_name(self):
         return self.llm
+
+    @property
+    def host_url(self):
+        return self.base_url
 
     def chat(self, model: OpenAIModels, message: str) -> str:
         response = self.client.chat.completions.with_raw_response.create(

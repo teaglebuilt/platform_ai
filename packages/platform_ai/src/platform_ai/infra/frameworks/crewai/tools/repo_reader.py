@@ -1,4 +1,4 @@
-from typing import Type, ClassVar
+from typing import Type, ClassVar, Any, Optional
 from pathlib import Path
 import fnmatch
 
@@ -16,9 +16,14 @@ class LocalRepoReaderTool(BaseTool):
     name: str = "CustomDirectoryReaderTool"
     description: str = "Reads clean source files from the repo, excluding .git, __pycache__, .venv, etc."
     args_schema: Type[BaseModel] = DirectoryReaderInput
+    directory: Optional[str] = None
 
     exclude_dirs: ClassVar[set[str]] = {".git", ".venv", "__pycache__", "node_modules", ".vscode", "dist", "build"}
     exclude_files: ClassVar[set[str]] = {"*.pyc", "*.log", "*.sqlite3", "*.db", "*.lock", "*.tmp"}
+
+    def __init__(self, directory: str, **kwargs):
+        super().__init__(**kwargs)
+        self.directory = directory
 
     def _is_excluded_dir(self, path: Path) -> bool:
         return any(part in self.exclude_dirs for part in path.parts)
@@ -33,7 +38,11 @@ class LocalRepoReaderTool(BaseTool):
             print(f"⚠️ Skipped unreadable file: {path} ({e})")
             return None
 
-    def _run(self, directory: str) -> list[Document]:
+    def _run(self, **kwargs: Any) -> list[Document] | str:
+        directory = kwargs.get("directory", self.directory)
+        if directory is None:
+            return "Error: No path to repo provided. Please provide a directory path either in the constructor or as an argument."
+
         root = Path(directory)
         documents = []
 

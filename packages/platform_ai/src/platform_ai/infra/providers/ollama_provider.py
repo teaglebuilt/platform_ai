@@ -11,7 +11,7 @@ class OllamaProvider(LLMProvider[OllamaModels]):
     def __init__(
         self,
         llm: str,
-        base_url: Optional[str] = os.environ['OLLAMA_HOST'],
+        base_url: str = os.environ['OLLAMA_HOST'],
         api_key: Optional[str] = None
     ) -> None:
         self.llm = llm
@@ -21,6 +21,10 @@ class OllamaProvider(LLMProvider[OllamaModels]):
     @property
     def model_name(self):
         return self.llm
+
+    @property
+    def host_url(self):
+        return self.base_url
 
     def chat(self, model: OllamaModels, message: str) -> str:
         llm = ChatOllama(model=model, base_url=self.base_url)

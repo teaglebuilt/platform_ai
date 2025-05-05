@@ -14,6 +14,10 @@ class LLMProvider(Protocol[ModelT]):
     def model_name(self) -> str:
         ...
 
+    @property
+    def host_url(self) -> str:
+        ...
+
     def chat(self, model: ModelT, message: str) -> str:
         ...
 

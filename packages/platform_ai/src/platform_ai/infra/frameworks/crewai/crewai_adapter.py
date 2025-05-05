@@ -19,7 +19,7 @@ class CrewAdapter(AgentFramework):
         feature_crew = construct_crew_from_config(
             type=feature_type,
             config_dir=Path(feature_path),
-            tools=self.tool_provider.get_tools(feature_type),
+            tools=self.tool_provider.get_tools(feature_type, Path(feature_path)),
             verbose=feature_settings.get("verbose", True)
         )
         feature_crew.kickoff()

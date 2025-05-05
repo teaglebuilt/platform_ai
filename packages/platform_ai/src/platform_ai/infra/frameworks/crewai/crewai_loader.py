@@ -2,7 +2,8 @@ from typing import Optional, Any, Literal
 from pathlib import Path
 from crewai import Agent, Task, Crew, LLM
 from crewai.tools import BaseTool
-
+from crewai_tools import FileReadTool
+from platform_ai.infra.frameworks.crewai.tools.repo_reader import LocalRepoReaderTool
 from platform_ai.utilities.io import parse_yaml
 from platform_ai.infra.providers.registry import get_llm_provider
 
@@ -12,7 +13,7 @@ def create_agent(
     tools: Optional[list[BaseTool]] = None,
 ) -> Agent:
     llm_provider = get_llm_provider(agent_cfg.get("llm", "gpt-4o"))
-    llm = LLM(model=llm_provider.model_name)
+    llm = LLM(model=llm_provider.model_name, base_url=llm_provider.host_url)
 
     return Agent(
         role=agent_cfg["role"].strip(),
@@ -73,6 +74,15 @@ def create_tasks_dict(tasks_config, agents_config) -> dict[str, Task]:
     return tasks_dict
 
 
+def get_tools(type: Literal["repo", "local"]) -> list[BaseTool]:
+    match type:
+        case "repo":
+            repo_tool = LocalRepoReaderTool(directory=str(Path.cwd()))
+            file_tool = FileReadTool()
+            return [repo_tool, file_tool]
+    return []
+
+
 def construct_crew_from_config(
     type: Literal["repo", "local"],
     tools: list[BaseTool],
@@ -81,6 +91,7 @@ def construct_crew_from_config(
 ) -> Crew:
     agents_config = parse_yaml(config_dir / "agents.yaml")
     tasks_config = parse_yaml(config_dir / "tasks.yaml")
+    tools = tools if not tools else get_tools(type)
     agents = build_agents_dict(agents_config, tools)
     tasks = create_tasks_dict(tasks_config, agents)
 
