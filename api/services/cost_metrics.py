@@ -16,7 +16,7 @@ output_tokens_gauge = Gauge("openai_daily_output_tokens", "Total OpenAI output t
 
 def get_headers():
     return {
-        "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}",
+        "Authorization": f"Bearer {os.getenv('OPENAI_ADMIN_KEY')}",
         "OpenAI-Organization": f"{os.getenv('OPENAI_ORGANIZATION_ID')}",
         "OpenAI-Project": f"{os.getenv('OPENAI_PROJECT_ID')}",
         "Content-Type": "application/json",
@@ -44,10 +44,12 @@ def fetch_costs():
         "limit": 30
     }
     response = requests.get(cost_url, headers=get_headers(), params=params)
+    print("response", response.json())
     return response.json().get("data", []) if response.ok else []
 
 
-def update_metrics():
+def update_cost_metrics():
+    print("updating cost metrics")
     usage_data = fetch_usage()
     cost_data = fetch_costs()
     today = date.today()
@@ -73,6 +75,7 @@ def update_metrics():
                 output_tokens += result.get("output_tokens", 0)
                 total_requests += result.get("num_model_requests", 0)
 
+    print("setting daily cost", monthly_cost)
     daily_cost_gauge.set(round(daily_cost, 4))
     monthly_cost_gauge.set(round(monthly_cost, 4))
     input_tokens_gauge.set(input_tokens)
@@ -82,7 +85,7 @@ def update_metrics():
 
 async def metric_scheduler():
     while True:
-        update_metrics()
+        update_cost_metrics()
         await asyncio.sleep(3600)
 
 

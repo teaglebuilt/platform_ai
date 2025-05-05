@@ -13,7 +13,7 @@ There are two use cases to start with.
   - **Repo Based AI Feature**
       Each repo will have a folder in `.github/config` with `agents.yaml` and `tasks.yaml`. It should train and understand the contents of everything in the codebase / repository. I can use `run feature --type repo --path ...` to manually trigger the crew. I can control the output based on `.github/prompts/objective.md`. Then i want to consider persistence and a webhook to retrain when new files or content has been added to the repo (via github webhook)
   
-  - Use with [continue.dev](https://www.continue.dev/). I want to use auto completion, chat, mcp protocol.
+  - Use with [cursor]().
 
 3. **Scheduled Jobs**
     I want to run things on a schedule to scrape content to train models and agents. I want to use an rss feed to centralize results. I use n8n on kubernetes already so determine how we should use it. 

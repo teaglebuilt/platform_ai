@@ -1,27 +1,35 @@
 import typer
-import duckdb
 from pathlib import Path
-
+from typing import cast
 from platform_ai.infra.storage.store_helpers import migrate_lance_to_duckdb
+from platform_ai.infra.frameworks.registry import select_framework
+from platform_ai.application.use_cases.agent_feature import AgentFeature, FeatureType
 
 cli = typer.Typer()
 
 
-@cli.command()
-def feature():
-    pass
+@cli.command("feature")
+def agent_feature(
+    framework: str = typer.Option(default="crewai", help="agent framework to use"),
+    feature_type: str = typer.Option(default="repo", help="type of feature"),
+    feature_path: str = typer.Argument(..., help="path to feature config")
+):
+    framework_type = select_framework(framework)
+    feature = AgentFeature(framework=framework_type)
+
+    feature.execute(feature_path=feature_path, feature_type=cast(FeatureType, feature_type))
 
 
 @cli.command("memory")
 def sync_memory(
     lance_table_path: str = typer.Option(
-        "./data/generated/lancedb", help="Path to LanceDB table directory"
+        "./generated/lancedb", help="Path to LanceDB table directory"
     ),
     duckdb_path: str = typer.Option(
-        "./data/generated/analytics.db", help="Path to DuckDB database"
+        "./generated/analytics.db", help="Path to DuckDB database"
     ),
     target_table: str = typer.Option(
-        "memory_log", help="DuckDB table to materialize into"
+        "memory", help="DuckDB table to materialize into"
     )
 ):
     if not Path(lance_table_path).exists():
@@ -32,5 +40,5 @@ def sync_memory(
         lance_table_path=lance_table_path,
         duckdb_path=duckdb_path,
         table_name=target_table or "memory",
-        duckdb_table="memory_log"
+        duckdb_table="memory"
     )

@@ -13,7 +13,7 @@ class CrewAdapter(AgentFramework):
     def run_agent_feature(
         self,
         feature_path: str,
-        feature_type: Literal['repo'],
+        feature_type: Literal['repo', 'local'],
         feature_settings: FeatureSettings
     ) -> FeatureResult:
         feature_crew = construct_crew_from_config(

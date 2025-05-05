@@ -7,11 +7,13 @@ from platform_ai.infra.frameworks.crewai.tools.repo_reader import LocalRepoReade
 
 
 class CrewAIToolProvider:
-    def get_tools(self, type: Literal["repo"]) -> list[BaseTool]:
+    def get_tools(self, type: Literal["repo", "local"]) -> list[BaseTool]:
         match type:
             case "repo":
                 repo_tool = LocalRepoReaderTool()
                 file_tool = FileReadTool()
                 return [repo_tool, file_tool]
+            case "local":
+                return []
             case _:
                 raise ValueError(f"Unsupported tool type: {type}")

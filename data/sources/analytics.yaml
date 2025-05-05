@@ -5,4 +5,4 @@ type: source
 
 connector: "duckdb"
 db: "./generated/analytics.db"
-sql: "select * from memory_log;"
+sql: "select * from memory;"

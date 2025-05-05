@@ -1,4 +1,4 @@
-from domain.ports.gateway import AIGateway
+from platform_ai.domain.ports.gateway import AIGateway
 
 
 class ChatWithAgent:

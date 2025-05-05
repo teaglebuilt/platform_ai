@@ -7,6 +7,13 @@ ModelT = TypeVar("ModelT", bound=str, contravariant=True)
 @runtime_checkable
 class LLMProvider(Protocol[ModelT]):
 
+    def __init__(self, llm: ModelT) -> None:
+        ...
+
+    @property
+    def model_name(self) -> str:
+        ...
+
     def chat(self, model: ModelT, message: str) -> str:
         ...
 

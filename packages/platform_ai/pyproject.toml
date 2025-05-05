@@ -1,33 +1,44 @@
 [project]
 name = "platform-ai"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.1.0-beta.1"
+description = "Core library for ai operations on platform"
 readme = "README.md"
 authors = [
     { name = "teaglebuilt", email = "dillan.teagle.va@gmail.com" }
 ]
-requires-python = ">=3.12"
+requires-python = "==3.12.1"
 dependencies = [
     "crawl4ai>=0.5.0.post8",
     "crewai[tools]==0.114.0",
     "duckdb>=1.2.1",
+    "e2b_code_interpreter>=1.2.1",
     "ipykernel>=6.29.5",
+    "lancedb>=0.22.0",
     "langchain-community>=0.3.20",
     "langchain-ollama>=0.3.0",
     "llama-index>=0.12.26",
     "mcp>=1.6.0",
     "nvitop>=1.4.2",
     "prometheus-client>=0.21.1",
+    "pyarrow>=20.0.0",
     "rich>=13.9.4",
     "streamlit>=1.44.0",
-    "typer>=0.15.2",
+    "typer",
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
 
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["platform_*"]
+namespaces = false
+exclude = ["test*."]
 
 [project.scripts]
 ai = "platform_ai.entry.cli.main:cli"
 shell = "platform_ai.entry.shell:main"
+
+[project.optional-dependencies]
+build = ["setuptools", "cython"]

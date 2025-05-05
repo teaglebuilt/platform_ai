@@ -1,11 +1,26 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+# [project]
+# name = "platform"
+# version = "0.1.0-beta.1"
+# description = "An example of uv workspace"
+# readme = "README.md"
+# requires-python = "==3.12.1"
+# dependencies = [
+#     "platform_ai==0.1.0-beta.1",
+# ]
 
-[tool.uv.workspace]
-members = [
-    "packages/ai_platform",
-]
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# [tool.uv.workspace]
+# members = ["packages/platform_ai"]
+# exclude = ["api/*", "terraform/*", "features/*", "integrations/*", "data/*", "chart/*"]
+
+# [tool.uv.sources]
+# platform_ai = { workspace = true }
+
+# [project.optional-dependencies]
+# build = ["setuptools", "cython"]
 
 [tool.ruff]
 line-length = 120

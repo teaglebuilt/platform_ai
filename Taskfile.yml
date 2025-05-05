@@ -6,10 +6,11 @@ vars:
   AI_PLATFORM_SERVICE_CONTAINER: teaglebuilt/ai_platform_service
 
 tasks:
-  init:
+  init_workspace:
     cmds:
     - uv venv
-    - uv pip install -e packages/platform_ai
+    - uv pip install -e ./packages/platform_ai
+    # - uv sync --all-packages
 
   deploy:
     cmds:
@@ -38,10 +39,7 @@ tasks:
       }'
 
   launch-dashboard:
+    dir: data
     cmds:
-    - |
-      ai sync memory \
-        --lance-table-path ./data/generated/lancedb/memory \
-        --duckdb-path ./data/generated/analytics.db \
-        --target-table memory_log
-    - rill start ./data/generated/analytics.db
+    - ai memory
+    - rill start

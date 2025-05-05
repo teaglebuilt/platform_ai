@@ -1,0 +1,12 @@
+name: Workspace
+description: Overview of project workspace
+---
+
+[UV Workspaces](https://docs.astral.sh/uv/concepts/projects/workspaces/) 
+is used to manage dependencies and package development. VSCODE should be configured to handle them accordingly.
+
+Workspace management is declared at the root project config
+@file:///Users/teaglebuilt/github/teaglebuilt/ai_platform/pyproject.toml
+
+command line scripts are defined in the package
+@file:///Users/teaglebuilt/github/teaglebuilt/ai_platform/packages/platform_ai/pyproject.toml

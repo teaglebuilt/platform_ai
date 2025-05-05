@@ -8,3 +8,11 @@ code_explorer:
   verbose: true
   max_iter: 5
   llm: llama-3.3-70b-instruct
+
+code_executor:
+  role: "Python Executor"
+  goal: "Execute Python code and return the results"
+  backstory: "You are an expert Python programmer capable of executing code and returning results."
+  llm: gpt-4o
+  tools:
+  - Python Interpreter

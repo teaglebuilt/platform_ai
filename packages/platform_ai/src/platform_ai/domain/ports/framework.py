@@ -14,6 +14,6 @@ class AgentFramework(Protocol):
     def run_agent_feature(
         self,
         feature_path: str,
-        feature_type: Literal['repo'],
+        feature_type: Literal['repo', 'local'],
         feature_settings: FeatureSettings) -> FeatureResult:
         ...

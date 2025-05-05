@@ -1,18 +1,19 @@
 from typing import Optional, Any, Literal
 from pathlib import Path
-from crewai import Agent, Task, Crew
+from crewai import Agent, Task, Crew, LLM
 from crewai.tools import BaseTool
-from crewai_tools import FileReadTool
-from loaders.provider_loader import get_llm_provider
 
-from utilities.io import parse_yaml
+from platform_ai.utilities.io import parse_yaml
+from platform_ai.infra.providers.registry import get_llm_provider
 
 
 def create_agent(
     agent_cfg: dict[str, Any],
     tools: Optional[list[BaseTool]] = None,
 ) -> Agent:
-    llm = get_llm_provider(agent_cfg.get("llm", "gpt-4o"))
+    llm_provider = get_llm_provider(agent_cfg.get("llm", "gpt-4o"))
+    llm = LLM(model=llm_provider.model_name)
+
     return Agent(
         role=agent_cfg["role"].strip(),
         goal=agent_cfg["goal"].strip(),
@@ -73,7 +74,7 @@ def create_tasks_dict(tasks_config, agents_config) -> dict[str, Task]:
 
 
 def construct_crew_from_config(
-    type: Literal["repo"],
+    type: Literal["repo", "local"],
     tools: list[BaseTool],
     config_dir: Path,
     verbose: bool = True
