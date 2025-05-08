@@ -1,0 +1,5 @@
+{
+ "name": "project-objective",
+ "description": "overall objective of what we are trying to accomplish in this repository",
+ "prompt": "{{load_file \"../../.github/prompts/objective.md\"}}"
+}

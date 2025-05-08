@@ -1,6 +1,6 @@
 from enum import Enum
 
-from platform_ai.infra.frameworks.crewai.crewai_adapter import CrewAdapter
+from platform_ai.adapters.frameworks.crewai.crewai_adapter import CrewAdapter
 from platform_ai.domain.ports.framework import AgentFramework
 
 

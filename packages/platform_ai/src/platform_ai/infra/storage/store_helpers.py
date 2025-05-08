@@ -1,6 +1,7 @@
 import duckdb
 import lancedb
 import pyarrow as pa
+from pathlib import Path
 
 from platform_ai.infra.storage.lancedb_store import LanceDBStore
 from platform_ai.infra.storage.duckdb_store import DuckDBStore
@@ -17,21 +18,23 @@ def get_store(type: str):
 
 
 def migrate_lance_to_duckdb(
-    lance_table_path: str,
+    lance_db_path: str,
     duckdb_path: str,
-    table_name: str,
-    duckdb_table: str,
 ):
-    db = lancedb.connect(lance_table_path)
-    table = db.open_table(table_name)
-    arrow_table = pa.Table.from_pydict(table.to_arrow().to_pydict())
+    db = lancedb.connect(lance_db_path)
 
-    conn = duckdb.connect(duckdb_path)
+    for lance_table_name in db.table_names():
+        table = db.open_table(lance_table_name)
+        arrow_table = pa.Table.from_pydict(table.to_arrow().to_pydict())
+        duckdb_table_name = table.name
 
-    conn.register("lance_mem", arrow_table)
-    conn.execute(f"""
-        CREATE OR REPLACE TABLE {duckdb_table} AS
-        SELECT * FROM lance_mem
-    """)
+        conn = duckdb.connect(duckdb_path)
 
-    print(f"✅ Migrated {len(arrow_table)} rows from LanceDB:{table_name} → DuckDB:{duckdb_table}")
+        conn.register(duckdb_table_name, arrow_table)
+        conn.execute(f"""
+            CREATE OR REPLACE TABLE {duckdb_table_name} AS
+            SELECT * FROM {duckdb_table_name}
+        """)
+
+        print(f"✅ Migrated {len(arrow_table)} rows from LanceDB:{lance_table_name} → DuckDB:{duckdb_table_name}")
+    print(f"✅ Completed Migrating {len(list(db.table_names()))} rows from LanceDB → DuckDB")

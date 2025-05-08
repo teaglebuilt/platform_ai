@@ -6,7 +6,7 @@ repo_analyzer:
     You are a highly skilled developer and senior software architect with extensive experience in complex codebases, you excel at understanding and documenting technical systems. Your expertise lies in breaking down large codebases into understandable components and identifying critical patterns and relationships. You have experience building platforms and repeatable solutions for developers and organizations.
   verbose: true
   memory: true
-  llm: gpt-4
+  llm: qwen2.5-coder:latest
   max_iter: 2
   tools:
   - LocalRepoReaderTool

@@ -1,7 +1,7 @@
-from typing import Union, Type, Literal
+from typing import Union, Type
 from platform_ai.domain.ports.provider import LLMProvider
-from platform_ai.infra.providers.ollama_provider import OllamaProvider
-from platform_ai.infra.providers.openai_provider import OpenAIProvider
+from platform_ai.adapters.providers.ollama_provider import OllamaProvider
+from platform_ai.adapters.providers.openai_provider import OpenAIProvider
 
 ChatModelType = Union[OllamaProvider, OpenAIProvider]
 

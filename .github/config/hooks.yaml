@@ -1,0 +1,3 @@
+on_change:
+- update_index
+- retrain_agents

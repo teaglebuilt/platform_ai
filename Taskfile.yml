@@ -41,5 +41,8 @@ tasks:
   launch-dashboard:
     dir: data
     cmds:
-    - ai memory
+    - |
+      ai memory \
+        --lance-db-path ~/.continue/index/lancedb \
+        --duckdb-path ~/github/teaglebuilt/ai_platform/data/generated/analytics.db
     - rill start

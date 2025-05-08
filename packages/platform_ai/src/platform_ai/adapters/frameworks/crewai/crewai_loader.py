@@ -3,9 +3,9 @@ from pathlib import Path
 from crewai import Agent, Task, Crew, LLM
 from crewai.tools import BaseTool
 from crewai_tools import FileReadTool
-from platform_ai.infra.frameworks.crewai.tools.repo_reader import LocalRepoReaderTool
+from platform_ai.adapters.frameworks.crewai.tools.repo_reader import LocalRepoReaderTool
 from platform_ai.utilities.io import parse_yaml
-from platform_ai.infra.providers.registry import get_llm_provider
+from platform_ai.adapters.providers.registry import get_llm_provider
 
 
 def create_agent(

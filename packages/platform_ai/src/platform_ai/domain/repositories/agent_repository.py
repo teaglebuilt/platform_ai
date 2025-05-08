@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from uuid import UUID
 
-from domain.entities.agent import Agent
+from platform_ai.domain.models.agent import Agent
 
 
 class AgentRepository(ABC):
